@@ -9,6 +9,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: https-certificates
+  namespace: default
 spec:
   secretName: https-certificates
   issuerRef:
@@ -17,6 +18,21 @@ spec:
   dnsNames:
     - home.local
     - "*.home.local"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: https-certificates
+  namespace: gitlab
+spec:
+  secretName: https-certificates
+  issuerRef:
+    name: https-certificates-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - home.local
+    - "*.home.local"
+    - "*.gitlab.home.local"
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate

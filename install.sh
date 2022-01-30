@@ -3,6 +3,16 @@
 set -e
 cd "$(dirname "$0")"
 
+echo "Cleaning up before install"
+{
+    bash uninstall.sh
+} || {
+    echo "Uninstallation failing is expected"
+}
+
+echo "Creating namespaces"
+kubectl apply -f namespaces.yaml
+
 echo "Getting Helm Repos"
 helm repo add jetstack https://charts.jetstack.io
 helm repo add gitlab https://charts.gitlab.io/
@@ -13,7 +23,6 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5
 helm upgrade \
     --atomic \
     --cleanup-on-fail \
-    --create-namespace \
     --install \
     --namespace='cert-manager' \
     --reset-values \
