@@ -3,6 +3,17 @@
 set -e
 cd "$(dirname "$0")"
 
+echo "Checking for gitpod-installer"
+{
+    which gitpod-installer && \
+    echo "GitPod installer found"
+} || {
+    echo "GitPod installer not found. Installing..."
+    curl -fsSLO https://github.com/gitpod-io/gitpod/releases/download/2022.01/gitpod-installer-linux-amd64
+    sudo install -o root -g root gitpod-installer-linux-amd64 /usr/local/bin/gitpod-installer
+    rm gitpod-installer-linux-amd64
+}
+
 echo "Cleaning up before install"
 {
     bash uninstall.sh
